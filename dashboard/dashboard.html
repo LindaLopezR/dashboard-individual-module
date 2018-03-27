@@ -1,0 +1,164 @@
+<template name="dashboard">
+
+  <div id="textura"></div>
+  <div id="logo">
+    <img src="/img/logo-igoandsee.png" >
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3 ">
+        <div class="pannel">
+          <div class="cabeza-panel">
+            {{>headerStatistic name="GEMBA WALKS" name_pt2=(_ "in_process") count=countRunningHistories}}
+          </div>
+
+          <div class="cuerpo-panel">
+            <p class="info">{{_ "more_information"}}<i class="caret right icon"></i></p>
+            <p class="more">{{_ "info_process"}}</p>
+
+            {{#if showRunningHistories}}
+              <div class="ui cards">
+                {{#each getRunningHistories}}
+                  {{>historyRealTime}}
+                {{/each}}
+              </div>
+            {{else}}
+              {{>noDataDashboard}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="pannel">
+          <div class="cabeza-panel">
+            {{>headerStatistic name="GEMBA WALKS" name_pt2=(_ "scheduled") count=countAfterHistories}}
+          </div>
+
+          <div class="cuerpo-panel">
+            <p class="info">{{_ "more_information"}}<i class="caret right icon"></i></p>
+            <p class="more">{{_ "info_scheduled"}}</p>
+
+            {{#if showAfterHistories}}
+              <div class="ui cards">
+                {{#each getAfterHistories}}
+                  {{>historyRealTime}}
+                {{/each}}
+              </div>
+            {{else}}
+              {{>noDataDashboard}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="pannel">
+          <div class="cabeza-panel">
+            {{>headerStatistic name="GEMBA WALKS" name_pt2=(_ "finished_today") count=countBeforeHistories}}
+          </div>
+
+          <div class="cuerpo-panel">
+            <p class="info">{{_ "more_information"}}<i class="caret right icon"></i></p>
+            <p class="more">{{_ "info_finished"}}</p>
+
+            {{#if showBeforeHistories}}
+              <div class="ui cards">
+                {{#each getBeforeHistories}}
+                  {{>historyRealTime}}
+                {{/each}}
+              </div>
+            {{else}}
+              {{>noDataDashboard}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="pannel">
+          <div class="cabeza-panel" id="ultimo">
+            <div class="titulos blancos" >
+              {{>headerStatistics name=(_ "today") name_pt2=(_ "today_statistics")  count=monthStatistics}}
+            </div>
+          </div>
+          <div class="cuerpo-panel" id="cuerpo">
+
+            <p class="info">{{_ "more_information"}}<i class="caret right icon"></i></p>
+            <p class="more">{{_ "info_statistics"}}</p>
+
+            <h1><i class="checkmark box icon"></i>
+              <span id="headerDoneCount">--/--</span>
+            </h1>
+            <h4>{{_ "done_gembas"}}</h4>
+            <hr>
+            <h1><i class="wait icon"></i>
+              <span id="headerOnTimeCompletion">--</span>%
+            </h1>
+            <h4>{{_ "on_completion"}}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</template>
+
+<template name="historyRealTime">
+  <div class="card">
+    <div class="content">
+      <div class="header-card">
+      	<p>
+          <a href="/auditDetail/{{gembaWalk}}">
+            <b>{{gembaName gembaWalk}}</b>
+          </a>
+        </p>
+      </div>
+      <div class="description-card">
+        <hr>
+        <p>
+          <b>{{_ "start_date"}}&nbsp; </b>
+          <br>{{formatDate startDate}} <br>
+
+          {{#if onDemand}}
+            <b>Done date</b>
+            <br> {{formatDate completeDate}}
+          {{else}}
+            <b>{{_ "finish_date"}} </b>
+            <br> {{formatDate finishDate}}
+          {{/if}}
+        </p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="noDataDashboard">
+  <div class="sin-mensaje">
+    <h1><i class="warning circle icon"></i></h1>
+    <h2>{{_ "there_are_no_data_to_display"}}</h2>
+  </div>
+</template>
+
+<template name="headerStatistic">
+  <h1 class="value">
+    {{count}}
+  </h1>
+  <div class="titulos">
+    <p>
+      {{name}}
+    </p>
+    <p>
+      {{name_pt2}}
+    </p>
+  </div>
+</template>
+
+<template name="headerStatistics">
+  <p class="size-1">
+    {{name}}
+  </p>
+  <p class="size">
+    {{name_pt2}}
+  </p>
+</template>
