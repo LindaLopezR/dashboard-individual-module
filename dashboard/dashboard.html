@@ -6,7 +6,7 @@
   </div>
   <div class="container">
     <div class="row">
-      <div class="col-md-3 ">
+      <div class="col-md-3">
         <div class="pannel">
           <div class="cabeza-panel">
             {{>headerStatistic name="GEMBA WALKS" name_pt2=(_ "in_process") count=countRunningHistories}}
@@ -26,6 +26,7 @@
               {{>noDataDashboard}}
             {{/if}}
           </div>
+
         </div>
       </div>
 
@@ -48,6 +49,7 @@
             {{else}}
               {{>noDataDashboard}}
             {{/if}}
+
           </div>
         </div>
       </div>
@@ -65,12 +67,13 @@
             {{#if showBeforeHistories}}
               <div class="ui cards">
                 {{#each getBeforeHistories}}
-                  {{>historyRealTime}}
+                  {{>historyRealTimeFinished}}
                 {{/each}}
               </div>
             {{else}}
               {{>noDataDashboard}}
             {{/if}}
+
           </div>
         </div>
       </div>
@@ -106,32 +109,83 @@
 
 <template name="historyRealTime">
   <div class="card">
-    <div class="content">
-      <div class="header-card">
-      	<p>
-          <a href="/auditDetail/{{gembaWalk}}">
-            <b>{{gembaName gembaWalk}}</b>
-          </a>
-        </p>
-      </div>
-      <div class="description-card">
-        <hr>
-        <p>
-          <b>{{_ "start_date"}}&nbsp; </b>
-          <br>{{formatDate startDate}} <br>
+      <a class="ui {{getLabel}} right corner label" data-toggle="tooltip" data-placement="top" title="{{getTitle}}">
+        <i class="{{getIcon}} icon"></i>
+      </a>
+      <div class="content">
+        <div class="header-card">
+        	<p>
+            <a href="/auditDetail/{{gembaWalk}}">
+              <b>{{gembaName gembaWalk}}</b>
+            </a>
+          </p>
+        </div>
+        <div class="description-card">
+          <hr>
+          <p>
+            <b>{{_ "start_date"}}&nbsp; </b>
+            <br>{{formatDate startDate}} <br>
 
-          {{#if onDemand}}
-            <b>Done date</b>
-            <br> {{formatDate completeDate}}
-          {{else}}
-            <b>{{_ "finish_date"}} </b>
-            <br> {{formatDate finishDate}}
-          {{/if}}
-        </p>
+            {{#if onDemand}}
+              <b>{{_ "done_date"}}</b>
+              <br> {{formatDate completeDate}}
+            {{else}}
+              <b>{{_ "finish_date"}}</b>
+              <br> {{formatDate finishDate}}
+            {{/if}}
+
+          </p>
+        </div>
       </div>
-    </div>
   </div>
 </template>
+
+
+<template name="historyRealTimeFinished">
+  <div class="card">
+      <a class="ui {{getLabel}} right corner label" data-toggle="tooltip" data-placement="top" title="{{getTitle}}">
+        <i class="{{getIcon}} icon"></i>
+      </a>
+      <div class="content">
+        <div class="header-card">
+        	<p>
+            <a href="/auditDetail/{{gembaWalk}}">
+              <b>{{gembaName gembaWalk}}</b>
+            </a>
+          </p>
+        </div>
+        <div class="description-card">
+          <hr>
+          <p>
+            <b>{{_ "start_date"}}&nbsp; </b>
+            <br>{{formatDate startDate}} <br>
+
+            {{#if onDemand}}
+              <b>{{_ "done_date"}}</b>
+              <br> {{formatDate completeDate}}
+            {{else}}
+
+              {{#if isComplete}}
+                <b>{{_ "done_date"}}</b>
+                {{#if isDoneOnTime this}}
+                  <span>{{_ "on_time"}}</span>
+                {{else}}
+                  <span>{{_ "late"}}</span>
+                {{/if}}
+                <br> {{formatDate completeDate}}
+              {{else}}
+                <b>{{_ "not_done"}}</b>
+                <br> {{formatDate finishDate}}
+              {{/if}}
+
+            {{/if}}
+
+          </p>
+        </div>
+      </div>
+  </div>
+</template>
+
 
 <template name="noDataDashboard">
   <div class="sin-mensaje">

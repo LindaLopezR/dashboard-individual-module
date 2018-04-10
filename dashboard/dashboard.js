@@ -41,6 +41,7 @@ Template.dashboard.rendered = function(){
 	$("#textura").pan({fps:20, speed: 0.5, dir: 'left', depth: 10});
 	$('.more').hide();
 	updateHeader();
+	$('[data-toggle="tooltip"]').tooltip();
 };
 
 Template.dashboard.events({
@@ -151,6 +152,62 @@ Template.historyRealTime.helpers({
 		}catch(err){
 			return TAPi18n.__('n_a');
 		}
+	},
+
+	getLabel() {
+		if (this.onDemand) {
+			return 'red';
+		}
+
+		const now = Date.now();
+		if (now > this.deadLine) {
+			return 'yellow';
+		}
+		return 'olive';
+	},
+
+	getIcon() {
+		if (this.onDemand) {
+			return 'remove';
+		}
+
+		const now = Date.now();
+		if (now > this.deadLine) {
+			return 'exclamation';
+		}
+		return 'checkmark';
+	},
+
+	getTitle() {
+		if (this.onDemand) {
+			return TAPi18n.__('gemba_not_time');
+		}
+
+		const now = Date.now();
+		if (now > this.deadLine) {
+			return TAPi18n.__('gemba_done_late');
+		}
+		return TAPi18n.__('gemba_on_time');
+	},
+
+});
+
+Template.historyRealTimeFinished.helpers({
+
+	formatDate(date) {
+		return moment(date).format('MMM-DD-YYYY hh:mm A');
+	},
+
+	gembaName(gemba) {
+		try{
+			return Gembas.findOne({_id:gemba}).name;
+		}catch(err){
+			return TAPi18n.__('n_a');
+		}
+	},
+
+	isDoneOnTime(history) {
+		return history.completeDate <= history.deadLine;
 	},
 
 });

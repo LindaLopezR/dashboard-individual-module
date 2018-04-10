@@ -1,6 +1,6 @@
-Último commit de dev 26 Sep 2017
--- 7de51e51aa96e96e598d98395bcfb00f6338029a --
+Último commit de dev 6 Abril 2018
+-- a7ef17b66080c40c68f59594b637dc2e83c407df --
 
-Del commit mencionado al 19 de marzo no se hicieron cambios en dev
+Última actualización: Identificación de colores en tarjetas
 
 Versión individual: las tarjetas no poseen nombre de usuario
